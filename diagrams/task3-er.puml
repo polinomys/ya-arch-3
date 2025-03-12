@@ -1,0 +1,62 @@
+@startuml
+title task3-ER
+
+entity User {
+    * user_id : UUID
+    --
+    * name: varchar
+    * email : varchar
+    * password : varchar
+    * balance: float
+}
+
+entity House {
+    * house_id : UUID
+    --
+    * address: varchar
+}
+
+entity DeviceType {
+    * devtype_id : int
+    --
+    * type: varchar
+    * name: varchar
+}
+
+entity Device {
+    * dev_id : UUID
+    --
+    * name: varchar
+    * devtype_id: int
+    * house_id : UUID
+    * ip: varchar
+    * serial_number: varchar
+    * properties: json
+    * status: boolean
+}
+
+entity Module {
+    * module_id : UUID
+    --
+    * name: varchar
+    * devtype_id: int
+    * dev_id : UUID
+    * serial: varchar
+}
+
+entity TelemetryData {
+    * td_id : UUID
+    --
+    * timestamp : date
+    * dev_id : UUID
+    * telemetry: json
+}
+
+User }|..o{ House
+House ||..o{ Device
+Device }o..|| DeviceType
+
+Device ||..|{ Module
+Device ||..o{ TelemetryData
+
+@enduml

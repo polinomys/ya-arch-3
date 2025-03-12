@@ -1,0 +1,16 @@
+@startuml
+title task1 - Context (SmartHomeMonolith)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(User, "User", "Пользователь")
+Person(Support, "Support", "Специалист поддержки")
+
+System(SmartHomeMonolith, "Smart Home", "Система управления отоплением и мониторинга температуры")
+System_Ext(Sensors, "Sensors", "Датчики, установленные у Пользователя")
+
+Rel(User, SmartHomeMonolith, "Управляет и отслеживает")
+Rel(Support, SmartHomeMonolith, "Подключает новые датчики, настраивает")
+Rel(SmartHomeMonolith, Sensors, "Управляющее воздействие")
+Rel(Sensors, SmartHomeMonolith, "Мониторинг")
+
+@enduml

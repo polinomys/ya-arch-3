@@ -1,0 +1,29 @@
+@startuml 
+title task2 - Context (SmartHomeMicroService)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(User, "User", "Пользователь")
+Person(Support, "Support", "Специалист поддержки")
+
+System(SmartHomeMicroService, "Smart Home", "Система управления умным домом")
+
+System_Ext(Sensors, "Sensors", "Совокупность различных датчиков, установленных у Пользователей") 
+System_Ext(Payments, "Payments", "Платежи")
+System_Ext(Notifications, "Notifications", "Нотификация Пользователей")
+System_Ext(Information, "Information", "Информация о погоде, тарифах на электричество в регионе Пользователя и др.")
+
+Rel_D(User, SmartHomeMicroService, "Управление своими датчиками")
+Rel_U(SmartHomeMicroService, User, "Предоставление информации о текущем состоянии")
+Rel_D(Support, SmartHomeMicroService, "Осуществление информационной поддержки")
+Rel_U(SmartHomeMicroService, Support, "Предоставление информации о текущем состоянии")
+
+Rel_D(SmartHomeMicroService, Sensors, "Управляющее воздействие")
+Rel_U(Sensors, SmartHomeMicroService, "Мониторинг")
+
+BiRel_D(SmartHomeMicroService, Payments, "Осуществление платежей")
+
+Rel_D(SmartHomeMicroService, Notifications, "Отправка уведомлений")
+
+BiRel_D(Information, SmartHomeMicroService, "Получение информации от внешнего сервиса по запросу")
+
+@enduml
