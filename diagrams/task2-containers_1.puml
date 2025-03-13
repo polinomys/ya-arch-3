@@ -1,0 +1,42 @@
+@startuml
+title task2 - Containers (SmartHomeMicroService)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+Person(User, "User", "Пользователь")
+Person(Support, "Support", "Специалист поддержки")
+
+System_Boundary(SmartHomeMicroService, "Система управления умным домом") {
+    
+    Container(Mobile, "Mobile app", "Kotlin", "Мобильное приложение")
+    Container(Web, "Web app", "React", "Веб-приложение")
+    Container(CoreAPIGW, "API GateWay", "Python", "API GW")
+
+    Container(CoreUsers, "Users", "Python", "")
+    Container(CoreSensors, "Sensors", "Python", "")
+    Container(CoreTelemetry, "Telemetry", "Python", "")
+    Container(CoreNotification, "Notification", "Python", "")
+    Container(CorePayments, "Payments", "Python", "")    
+}
+
+System_Ext(Sensors, "Sensors", "Совокупность различных датчиков, установленных у Пользователей") 
+System_Ext(Payments, "Payments", "Платежи")
+System_Ext(Notifications, "Notifications", "Нотификация Пользователей")
+
+BiRel_D(User, Mobile, "")
+BiRel_D(User, Web, "")
+BiRel_D(Support, Web, "")
+BiRel_D(Mobile, CoreAPIGW, "")
+BiRel_D(Web, CoreAPIGW, "")
+
+BiRel_D(CoreAPIGW, CoreUsers, "")
+BiRel_D(CoreAPIGW, CoreSensors, "")
+BiRel_D(CoreAPIGW, CoreTelemetry, "")
+BiRel_D(CoreAPIGW, CoreNotification, "")
+BiRel_D(CoreAPIGW, CorePayments, "")
+
+BiRel_D(CoreSensors, Sensors, "Управление датчиками")
+Rel(CoreNotification, Notifications, "Отправка уведомлений")
+BiRel(CorePayments, Payments, "Осуществление платежей")
+
+@enduml

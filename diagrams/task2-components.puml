@@ -1,0 +1,50 @@
+@startuml
+title task2 - Components (Core Smart Home)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(Mobile, "Mobile app", "Kotlin", "Мобильное приложение")
+Container(Web, "Web app", "React", "Веб-приложение")
+
+Container(CoreSensorsKafka, "Kafka")
+Container(CoreSensorsDB, "DB")
+Container(CoreSensorsS3, "S3")
+
+Container_Boundary(Core, "Core Smart Home") {
+    Component(CoreUsers, "Users", "Python", "Аккаунты пользователей")
+    Component(CoreSensorsTech, "SensorsTech", "Python", "Конфигурация сенсоров")
+    Component(CoreSensorsSettings, "SensorsSettings", "Python", "Настройки сенсоров (сценариев)")
+    Component(CorePayments, "Payments", "Python", "Обработка платежей")
+    Component(CoreAdvisor, "Advisor", "Python", "Рекомендательная система")
+    Component(CoreNotification, "Notification", "Python", "Нотификация пользователей")   
+}
+
+System_Ext(Sensors, "Sensors", "Совокупность различных датчиков, установленных у Пользователей") 
+System_Ext(Payments, "Payments", "Платежи")
+System_Ext(Notifications, "Notifications", "Нотификация Пользователей")
+System_Ext(Information, "Information", "Информация о погоде, тарифах на электричество в регионе Пользователя и др.")
+
+
+
+Rel(Mobile, CoreUsers, "")
+Rel(Web, CoreUsers, "")
+
+BiRel(CoreSensorsSettings, CoreSensorsDB, "")
+BiRel(CoreSensorsSettings, CoreSensorsS3, "")
+BiRel(CoreSensorsSettings, CoreSensorsKafka, "")
+
+BiRel(CoreUsers, CoreSensorsTech, "")
+BiRel(CoreSensorsTech, CoreSensorsSettings, "")
+
+BiRel(CoreUsers, CorePayments, "")
+BiRel(CorePayments, Payments, "")
+
+BiRel(CoreUsers, CoreAdvisor, "")
+BiRel(CoreAdvisor, Information, "")
+
+BiRel(CoreUsers, CoreNotification, "")
+BiRel(CoreNotification, Notifications, "")
+
+BiRel(Sensors, CoreSensorsSettings, "")
+Rel_D(Sensors, CoreSensorsKafka, "")
+
+@enduml

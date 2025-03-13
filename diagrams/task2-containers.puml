@@ -1,0 +1,43 @@
+@startuml
+title task2 - Containers (SmartHomeMicroService)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+Person(User, "User", "Пользователь")
+Person(Support, "Support", "Специалист поддержки")
+
+System_Boundary(SmartHomeMicroService, "Система управления умным домом") {
+    
+    Container(Mobile, "Mobile app", "Kotlin", "Мобильное приложение")
+    Container(Web, "Web app", "React", "Веб-приложение")
+    Container(Core, "Core Smart Home", "Python", "Core Smart Home")
+    Container(Kafka, "Kafka")
+    Container(DB, "DB")
+    Container(S3, "S3")
+}
+
+System_Ext(Sensors, "Sensors", "Совокупность различных датчиков, установленных у Пользователей") 
+System_Ext(Payments, "Payments", "Платежи")
+System_Ext(Notifications, "Notifications", "Нотификация Пользователей")
+System_Ext(Information, "Information", "Информация о погоде, тарифах на электричество в регионе Пользователя и др.")
+
+BiRel_D(User, Mobile, "Управление, мониторинг")
+BiRel_D(User, Web, "Управление, мониторинг")
+BiRel_D(Support, Web, "Поддержка, мониторинг")
+
+BiRel_U(Core, Web, "")
+BiRel_U(Core, Mobile, "")
+
+BiRel_R(Core, DB, "Хранение настроек датчиков, пользовательских сценариев")
+BiRel_R(Core, S3, "Запись и хранение видео с камер")
+BiRel_L(Core, Kafka, "Полученение значений с датчиков")
+
+
+BiRel_D(Core, Sensors, "Управление датчиками")
+Rel(Core, Notifications, "Отправка уведомлений")
+BiRel(Core, Payments, "Осуществление платежей")
+BiRel(Core, Information, "Запрос и получение данных из внешних сервисов")
+
+Rel(Sensors, Kafka, "Сбор значений с датчиков")
+
+@enduml
