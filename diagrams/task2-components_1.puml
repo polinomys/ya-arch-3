@@ -1,0 +1,25 @@
+@startuml
+title task2 - Components (Sensors)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(CoreAPIGW, "API GateWay", "Python", "API GW")
+
+Container_Boundary(Core, "Sensors") {
+    
+    Component(CoreScript, "Script", "Python", "")
+    Component(CoreScriptDB, "DB", "", "")
+    Component(CoreScriptKafka, "Kafka", "", "")
+
+}
+
+System_Ext(Sensors, "Sensors", "Совокупность различных датчиков, установленных у Пользователей") 
+
+BiRel(CoreAPIGW, CoreScript, "")
+BiRel_D(CoreScript, CoreScriptKafka, "")
+BiRel_L(CoreScript, CoreScriptDB, "Хранение технических параметров датчиков, а также сценариев их работы")
+
+Rel_U(Sensors, CoreScriptKafka, "Датчики откидывают свои параметры")
+
+Rel_U(CoreScript, Sensors, "Управляющее воздействие (синхронное)")
+
+@enduml
